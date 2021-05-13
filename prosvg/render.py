@@ -49,9 +49,11 @@ class Render():
 
     def add(self, *elements): # Add svg elements, don't render them
         self.scene.add(*elements)
+        return self
 
     def remove(self, *elements):
         self.scene.remove(*elements)
+        return self
 
     def writeFrame(self, frames = 1):
         raster = cairosvg.svg2png(bytestring=self.scene.byteString(), scale=self.scale) * frames
@@ -89,12 +91,14 @@ class Render():
             self.writeFrame()
         for o in objects:
             o.animation.reset()
+        return self
 
     def pause(self, time=1): # Pause animation
         if not self.running:
             return
         print('Pausing for {} frames ({} s)...'.format( int(time * self.fps), time))
         self.writeFrame(int(time * self.fps))
+        return self
 
     def stop(self):
         print('Animation stopped')

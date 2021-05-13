@@ -452,5 +452,15 @@ class Text(svg.Text, AnimatedObject):
         self.animation.add(action, time)
         return self
 
-    def integerCount(self, start, end, time=1, ease=easeInOut):
-            return self.textFunction(lambda t: str(int((1-t) * start + t * end)), time, ease)
+    def integerCount(self, formatString, start, end, time=1, ease=easeInOut):
+        function = lambda t: formatString.format(int((1-t) * start + t * end))
+        return self.textFunction(function, time, ease)
+
+    def typeText(self, text, time=1, ease=easeInOut):
+        function = lambda t: text[0 : int(t * len(text))]
+        return self.textFunction(function, time, ease)
+
+    def deleteText(self, time=1, ease=easeInOut):
+        text = self.text
+        function = lambda t: text[0 : int((1 - t) * len(text))]
+        return self.textFunction(function, time, ease)

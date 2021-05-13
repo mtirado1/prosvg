@@ -416,7 +416,7 @@ class Path(Figure):
 
             P1 = P0 + d1 / 3
             P2 = P3 - d2 / 3
-            precision = 4
+
             if not continuous:
                 self.M(P3.x, P3.y)
             elif t == 0:
@@ -515,6 +515,7 @@ class Text(Figure):
         self.y = y
         self.lineHeight = 1
         self.text = text
+        self.lines = []
         self.setAttributes({'x': x, 'y': y})
         self.setAttributes(attributes)
 
@@ -532,6 +533,7 @@ class Text(Figure):
 
     def set_text(self, text):
         self._text = text
+        self.lines = []
         # Remove all sub-text elements
         for element in self.root.findall('tspan'):
             self.root.remove(element)
@@ -552,8 +554,8 @@ class Text(Figure):
                     'dy': str(self.lineHeight) + 'em'
                 })
             self.add(span)
+            self.lines.append(span)
 
-        
     text = property(get_text, set_text)
 
 class Image(Figure):

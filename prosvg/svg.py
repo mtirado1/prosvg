@@ -378,7 +378,7 @@ class Path(Figure):
     def a(self, rx, ry, rotation, largeArc, sweep, dx, dy):
         return self.command('a {} {} {} {} {} {} {}', rx, ry, rotation, int(largeArc), int(sweep), dx, dy)
 
-    def Arc(self, cx, cy, rx, ry, startAngle, endAngle, drawSlice=False):
+    def arc(self, cx, cy, rx, ry, startAngle, endAngle, drawSlice=False):
         center = Point(cx, cy)
         startPoint = Point(rx * math.cos(startAngle), ry * math.sin(startAngle)) + center
         endPoint = Point(rx * math.cos(endAngle), ry * math.sin(endAngle)) + center
@@ -400,22 +400,22 @@ class Path(Figure):
     def parametric(self, f, start, end, n, delta=1e-3):
         inc = (end - start) / (n - 1)
         self.M(*f(start))
-        
+
         continuous = True
         for t in range(n-1):
-            t1 = start + t * inc
-            t2 = start + (t + 1) * inc
-            P0 = Point(*f(t1))
-            P3 = Point(*f(t2))
-
             k  = inc/delta
-            # derivatives
-            d1 = k * (Point(*f(t1 + delta)) - P0)
-            d2 = k * (Point(*f(t2 + delta)) - P3)
-            continuous = abs(d2) <= 500
 
-            P1 = P0 + d1 / 3
+            if t == 0:
+                t1 = start + t * inc
+                P0 = Point(*f(t1))
+                d1 = k * (Point(*f(t1 + delta)) - P0)
+                P1 = P0 + d1 / 3
+
+            t2 = start + (t + 1) * inc
+            P3 = Point(*f(t2))
+            d2 = k * (Point(*f(t2 + delta)) - P3)
             P2 = P3 - d2 / 3
+            continuous = abs(d2) <= 500
 
             if not continuous:
                 self.M(P3.x, P3.y)

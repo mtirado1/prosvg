@@ -569,6 +569,13 @@ class Image(Figure):
             'href': href
         })
 
+class Link(Element):
+    def __init__(self, url, content=None):
+        super().__init__('a')
+        self.setAttributes({'href': url})
+        if content is not None:
+            self.add(content)
+
 # Styles (Fill, Stroke, Font, Opacity)
 
 class FigureStyle(dict):

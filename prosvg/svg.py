@@ -399,30 +399,35 @@ class Path(Figure):
 
     def parametric(self, f, start, end, n, delta=1e-3):
         inc = (end - start) / (n - 1)
-        self.M(*f(start))
+        first = True
 
-        continuous = True
         for t in range(n-1):
             k  = inc/delta
+            try:
+                if first:
+                    t1 = start + t * inc
+                    P0 = Point(*f(t1))
+                    d1 = k * (Point(*f(t1 + delta)) - P0)
+                    P1 = P0 + d1 / 3
+                t2 = start + (t + 1) * inc
+                P3 = Point(*f(t2))
+                d2 = k * (Point(*f(t2 + delta)) - P3)
+                P2 = P3 - d2 / 3
 
-            if t == 0:
-                t1 = start + t * inc
-                P0 = Point(*f(t1))
-                d1 = k * (Point(*f(t1 + delta)) - P0)
-                P1 = P0 + d1 / 3
-
-            t2 = start + (t + 1) * inc
-            P3 = Point(*f(t2))
-            d2 = k * (Point(*f(t2 + delta)) - P3)
-            P2 = P3 - d2 / 3
-            continuous = abs(d2) <= 500
-
-            if not continuous:
-                self.M(P3.x, P3.y)
-            elif t == 0:
-                self.C(P1.x, P1.y, P2.x, P2.y, P3.x, P3.y)
-            else:
-                self.S(P2.x, P2.y, P3.x, P3.y)
+                try:
+                    m = d2.y / d2.x
+                except ZeroDivisionError:
+                    m = 600
+                if m > 500:
+                    first = True
+                elif first:
+                    self.M(P0.x, P0.y)
+                    self.C(P1.x, P1.y, P2.x, P2.y, P3.x, P3.y)
+                    first = False
+                else:
+                    self.S(P2.x, P2.y, P3.x, P3.y)
+            except ValueError:
+                first = True
 
     def clear(self):
         self.d = ''

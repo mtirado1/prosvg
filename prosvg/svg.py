@@ -446,7 +446,7 @@ class Rect(Figure):
         super().__init__('rect')
         self.setAttributes({'x': x, 'y': y, 'width': w, 'height': h})
         self.setAttributes(attributes)
-    def setCornerRadius(rx, ry=None):
+    def setCornerRadius(self, rx, ry=None):
         if ry is None:
             ry = rx
         self.setAttributes({'rx': rx, 'ry': ry})

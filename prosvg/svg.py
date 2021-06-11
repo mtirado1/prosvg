@@ -642,5 +642,8 @@ class FillStroke(FigureStyle):
             self.opacity(opacity)
 
 class Font(FigureStyle):
-    def __init__(self, fontFamily, size, fill='black'):
-        super().__init__({'font-family': fontFamily, 'font-size': size, 'fill': fill, 'stroke': None})
+    def __init__(self, fontFamily, size, fill='black', weight=None):
+        properties = {'font-family': fontFamily, 'font-size': size, 'fill': fill, 'stroke': None}
+        if weight is not None:
+            properties['font-weight'] = weight
+        super().__init__(properties)

@@ -32,3 +32,9 @@ the animation module renders the svg file as an image and pipes it to ffmpeg.
 5. Pipe png image to [FFmpeg](https://ffmpeg.org)
 6. Repeat until the animation ends
 
+
+## Installation
+
+1. Clone and cd into the repository
+2. Run `pip install .`
+

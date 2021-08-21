@@ -532,6 +532,16 @@ class Text(Figure):
         elif mode == 'center' or mode == 'middle':
             self.root.set('text-anchor', 'middle')
         self.set_text(self.text)
+        return self
+
+    def baseline(self, mode):
+        if mode == 'top':
+            self.root.set('dominant-baseline', 'auto')
+        elif mode == 'middle' or mode == 'center':
+            self.root.set('dominant-baseline', 'middle')
+        elif mode == 'bottom':
+            self.root.set('dominant-baseline', 'hanging')
+        return self
 
     def get_text(self):
         return self._text

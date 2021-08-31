@@ -68,9 +68,9 @@ text = Text(20, 60, 'PROGRAMMATIC\nSVG', Font('Lexend Deca', 40, white))
 
 # Arcs
 arc = Path(Fill(white))
-arc.Arc(*(img.center + Point(300, -100)), 50, 50, 0, tau*0.75, drawSlice=True)
+arc.slice(*(img.center + Point(300, -100)), 50, 50, 0, tau*0.75)
 arc2 = Path(Stroke(white, 5))
-arc2.Arc(*(img.center + Point(300, -200)), 50, 50, tau/2, tau, drawSlice=False)
+arc2.arc(*(img.center + Point(300, -200)), 50, 50, tau/2, tau)
 arc2.id = 'clone'
 
 # Some clones created with the <use> tag

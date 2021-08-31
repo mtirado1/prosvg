@@ -378,24 +378,20 @@ class Path(Figure):
     def a(self, rx, ry, rotation, largeArc, sweep, dx, dy):
         return self.command('a {} {} {} {} {} {} {}', rx, ry, rotation, int(largeArc), int(sweep), dx, dy)
 
-    def arc(self, cx, cy, rx, ry, startAngle, endAngle, drawSlice=False):
+    def arc(self, cx, cy, rx, ry, startAngle, endAngle):
         center = Point(cx, cy)
         startPoint = Point(rx * math.cos(startAngle), ry * math.sin(startAngle)) + center
         endPoint = Point(rx * math.cos(endAngle), ry * math.sin(endAngle)) + center
-       
-        if drawSlice:
-            self.M(center.x, center.y)
-            self.L(startPoint.x, startPoint.y)
-        else:
-            self.M(startPoint.x, startPoint.y)
-
         largeArc = abs(endAngle - startAngle) > math.pi
         sweep = 1
+
+        self.M(startPoint.x, startPoint.y)
         self.A(rx, ry, 0, largeArc, sweep, endPoint.x, endPoint.y)
         
-        if drawSlice:
-            self.Z()
         return self
+
+    def slice(self, cx, cy, rx, ry, startAngle, endAngle):
+        return self.arc(cx, cy, rx, ry, startAngle, endAngle).L(cx, cy).Z()
 
     def parametric(self, f, start, end, n, delta=1e-3):
         inc = (end - start) / (n - 1)
